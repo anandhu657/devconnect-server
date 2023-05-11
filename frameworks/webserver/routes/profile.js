@@ -11,9 +11,14 @@ export default function profileRouter(express) {
         userDbRepositoryMongoDB,
     );
 
-    router.route('/').get(authMiddleware, controller.fetchUserById);
+    router.route('/:user').get(authMiddleware, controller.fetchUserById);
     router.route('/edit').get(authMiddleware, controller.fetchUserById);
     router.route('/edit').post(authMiddleware, controller.updateUserByEmail);
+    router.route('/current/user').get(authMiddleware, controller.fetchCurrentUser);
+    router.route('/sendConnectionRequest').post(authMiddleware, controller.sendConnectionRequest);
+    router.route('/acceptRequest').post(authMiddleware, controller.acceptRequest);
+    router.route('/disConnectRequest').post(authMiddleware, controller.disConnectRequest);
+    router.route('/savedBlogs/:user').get(authMiddleware, controller.getSavedBlogs);
 
     return router;
 }

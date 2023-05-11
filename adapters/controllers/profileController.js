@@ -1,6 +1,10 @@
 import findById from "../../applications/use_cases/user/findById";
 import updateByEmail from "../../applications/use_cases/user/updateByEmail";
-import fetchQuestionsByUserId from "../../applications/use_cases/user/fetchQuestionsByUserId";
+import addConnectionRequest from "../../applications/use_cases/user/addConnectionRequest";
+import acceptConnectionRequest from "../../applications/use_cases/user/acceptConnectionRequest";
+import disConnect from "../../applications/use_cases/user/disConnectRequest";
+import fetchSavedBlogs from "../../applications/use_cases/user/fetchSavedBlogs";
+
 
 export default function userController(
     userDbRepository,
@@ -9,16 +13,11 @@ export default function userController(
     const dbRepository = userDbRepository(userDbRepositoryImpl());
 
     const fetchUserById = (req, res) => {
-        const id = req.decodeToken.user.id;
+        const id = req.params.user
         findById(id, dbRepository)
-            .then(async (user) => {
-                if (user._id) {
-                    fetchQuestionsByUserId(user._id, dbRepository)
-                        .then((questions) => {
-                            res.json(user, questions)
-                        })
-                        .catch((err) => console.log(err))
-                }
+            .then((user) => {
+                console.log(user);
+                res.json(user)
             })
             .catch((err) => console.log(err))
     };
@@ -40,8 +39,65 @@ export default function userController(
 
     }
 
+    const fetchCurrentUser = (req, res) => {
+        const id = req.decodeToken.user.id;
+        res.json(id)
+    }
+
+    const sendConnectionRequest = (req, res) => {
+        const requestSenderId = req.decodeToken.user.id;
+        const requestReceiverId = req.body.userId;
+
+        addConnectionRequest(
+            requestSenderId,
+            requestReceiverId,
+            dbRepository
+        )
+            .then(() => res.json())
+            .catch((err) => console.log(err))
+    }
+
+    const acceptRequest = (req, res) => {
+        const requestReceiverId = req.decodeToken.user.id;
+        const requestSenderId = req.body.userId;
+
+        acceptConnectionRequest(
+            requestSenderId,
+            requestReceiverId,
+            dbRepository
+        )
+            .then(() => res.json())
+            .catch((err) => console.log(err))
+    }
+
+    const disConnectRequest = (req, res) => {
+        const requestReceiverId = req.decodeToken.user.id;
+        const requestSenderId = req.body.userId;
+
+        disConnect(
+            requestSenderId,
+            requestReceiverId,
+            dbRepository
+        )
+            .then(() => res.json())
+            .catch((err) => console.log(err))
+    }
+
+    const getSavedBlogs = (req, res) => {
+        const userId = req.params.user;
+
+        fetchSavedBlogs(userId, dbRepository)
+            .then((blogs) => res.json(blogs))
+            .catch((err) => console.log(err))
+    }
+
     return {
         fetchUserById,
-        updateUserByEmail
+        updateUserByEmail,
+        fetchCurrentUser,
+        sendConnectionRequest,
+        acceptRequest,
+        disConnectRequest,
+        getSavedBlogs,
     }
 }

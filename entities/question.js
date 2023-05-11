@@ -4,5 +4,6 @@ export default function question(...args) {
         getDescription: () => args[0].description,
         getDate: () => args[0].date,
         getUser: () => args[0].user,
+        getTags: () => args[0].tags
     }
 }

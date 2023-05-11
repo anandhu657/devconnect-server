@@ -4,5 +4,6 @@ export default function blog(...args) {
         getDetails: () => args[0].details,
         getDate: () => args[0].date,
         getUser: () => args[0].user,
+        getTags: () => args[0].tags
     }
 }

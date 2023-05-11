@@ -6,7 +6,7 @@ export default function authService() {
 
     const generateToken = (payload) =>
         jwt.sign(payload, config.jwtSecret, {
-            expiresIn: 360000
+            expiresIn: 24 * 60 * 60
         });
 
     return {

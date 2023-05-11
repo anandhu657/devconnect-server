@@ -1,4 +1,4 @@
-import userEntity from '../../../entities/user'
+ import userEntity from '../../../entities/user'
 
 export default function login(email, username, profile_pic, userRepository, authService) {
     if (!email) {

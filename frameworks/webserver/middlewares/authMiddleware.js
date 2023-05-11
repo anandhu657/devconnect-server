@@ -3,7 +3,7 @@ import authServiceInterface from '../../../applications/services/authService';
 
 export default function authMiddleware(req, res, next) {
     const token = req.header('Authorization');
-
+    
     const authService = authServiceInterface(authServiceImpl());
 
     if (!token) {

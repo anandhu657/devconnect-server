@@ -1,11 +1,11 @@
-export default function findAll(id, questionRepository) {
+export default function findAll(id, pageSize, skip, questionRepository) {
     if (!id) {
         const error = new Error('id is required');
         error.statusCode = 401;
         throw error;
     }
 
-    return questionRepository.findAll(id).then((questions) => {
+    return questionRepository.findAll(id, pageSize, skip).then((questions) => {
         try {
             if (!questions) {
                 const error = new Error('No questions found');

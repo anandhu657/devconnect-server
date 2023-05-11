@@ -6,7 +6,7 @@ import expressConfig from "./frameworks/webserver/express";
 import mongoDbConnection from "./frameworks/database/mongoDB/connection";
 import serverConfig from "./frameworks/webserver/server";
 import routes from "./frameworks/webserver/routes";
-
+import socketioConfig from "./frameworks/webserver/socketio";
 
 const app = express();
 const server = http.createServer(app);
@@ -17,6 +17,9 @@ expressConfig(app);
 // server configuration and start
 serverConfig(server, config).startServer();
 
+// socket.io configuration
+socketioConfig(server)
+
 // DB configuration and connection create
 mongoDbConnection(mongoose, config).connectToMongo();
 
@@ -24,3 +27,6 @@ mongoDbConnection(mongoose, config).connectToMongo();
 routes(app, express);
 
 export default app;
+
+
+// @babelmongoose/node@^7.20.7
