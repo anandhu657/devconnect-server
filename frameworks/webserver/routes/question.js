@@ -27,6 +27,7 @@ export default function questionRouter(express) {
     router.route('/dislike').post(authMiddleware, controller.dislikeQuestion);
     router.route('/tags').get(authMiddleware,controller.getQuestionByTag)
     router.route('/comment').post(authMiddleware, controller.addComment);
+    router.route('/tags/all').get(authMiddleware, controller.getAllTags);
 
     return router;
 }

@@ -1,5 +1,5 @@
 export default function questionRepository(repository) {
-    const findAll = (id, pageSize, skip) => repository.findAll(id, pageSize, skip);
+    const findAll = (id, pageSize, skip, filter, sort) => repository.findAll(id, pageSize, skip, filter, sort);
     const create = (question) => repository.create(question);
     const findById = (id) => repository.findById(id);
     const findAllByProfileId = (id) => repository.findAllByProfileId(id);
@@ -22,6 +22,6 @@ export default function questionRepository(repository) {
         findQuestionByTag,
         addComment,
         changeReportCount,
-        blockQuestionById
+        blockQuestionById,
     }
 }

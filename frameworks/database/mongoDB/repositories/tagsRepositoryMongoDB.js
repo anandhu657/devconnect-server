@@ -6,10 +6,18 @@ export default function () {
             name: tag
         };
 
-        return await TagModel.findOneAndUpdate({ name: newTag.name },{ $set: newTag },{ upsert: true });
+        return await TagModel.findOneAndUpdate({ name: newTag.name }, { $set: newTag }, { upsert: true });
+    }
+
+    const findAllTags = () => {
+        return TagModel
+            .find()
+            .select('name')
+            .exec()
     }
 
     return {
-        add
+        add,
+        findAllTags
     }
 }

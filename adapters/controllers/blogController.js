@@ -20,14 +20,16 @@ export default function blogController(
     const tagsRepository = tagsDbRepository(tagsDbRepositoryImpl());
     const userRepository = userDbRepository(userDbRepositoryImpl());
 
-    const getAllBlogs = async (req, res, next) => {
+    const getAllBlogs = async (req, res) => {
         const id = req.decodeToken.user.id;
         const page = parseInt(req.query.skip) + 1
         const pageSize = +req.query.limit || 10
         const skip = (page - 1) * pageSize
+        const filter = req.query.filter;
+        const sort = req.query.sort;
         const totalPosts = await count(id, dbRepository)
 
-        findAll(id, pageSize, skip, dbRepository)
+        findAll(id, pageSize, skip, filter, sort, dbRepository)
             .then((blogs) => res.json({ blogs, totalPosts }))
             .catch((err) => console.log(err))
     }

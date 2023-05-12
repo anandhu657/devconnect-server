@@ -2,13 +2,31 @@ import QuestionModel from "../models/question";
 import { ObjectId } from 'mongodb';
 
 export default function questionRepositoryMongoDB() {
-    const findAll = (id, pageSize, skip) => {
-        return QuestionModel.find({ 'user': { $ne: new ObjectId(id) } })
-            .populate('tags')
-            .populate('user')
-            .limit(pageSize)
-            .skip(skip)
-            .exec();
+    const findAll = (id, pageSize, skip, filter, sort) => {
+        const query = QuestionModel.find({ 'user': { $ne: new ObjectId(id) } });
+        if (filter === 'No answers') {
+            query.where('answers').size(0);
+        }
+
+        if (filter === 'No accepted answers') {
+            query.or([{ acceptedAnswer: null }, { acceptedAnswer: { $exists: false } }]);
+        }
+
+        if (sort === 'Newest') {
+            query.sort({ date: -1 });
+        }
+
+        if (sort === 'Most Viewed') {
+            query.sort({ views: -1 });
+        }
+
+        if (sort === 'Least Viewed') {
+            query.sort({ views: 1 });
+        }
+
+        query.limit(pageSize).skip(skip).populate('tags').populate('user');
+
+        return query;
     }
 
     const count = (id) => {
@@ -53,7 +71,10 @@ export default function questionRepositoryMongoDB() {
     }
 
     const findAllByProfileId = (id) => {
-        return QuestionModel.find({ user: new ObjectId(id) }).sort({ date: -1 });
+        return QuestionModel
+            .find({ user: new ObjectId(id) })
+            .populate('tags')
+            .sort({ date: -1 });
     }
 
     const updateLikeById = (id) => {

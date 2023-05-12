@@ -56,6 +56,18 @@ const QuestionSchema = new Schema(
                     type: Date,
                     default: Date.now
                 },
+                accepted: {
+                    type: Boolean,
+                    default: false
+                },
+                likedusers: {
+                    type: [mongoose.Schema.Types.ObjectId],
+                    ref: 'users'
+                },
+                dislikedusers: {
+                    type: [mongoose.Schema.Types.ObjectId],
+                    ref: 'users'
+                },
                 comments: [
                     {
                         comment: {
@@ -75,6 +87,10 @@ const QuestionSchema = new Schema(
         ],
         closed: {
             type: Boolean,
+        },
+        acceptedAnswer: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'answers'
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,

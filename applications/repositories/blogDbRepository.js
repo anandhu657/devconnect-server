@@ -1,5 +1,5 @@
 export default function blogRepository(repository) {
-    const findAll = (id, pageSize, skip) => repository.findAll(id, pageSize, skip);
+    const findAll = (id, pageSize, skip, filter, sort) => repository.findAll(id, pageSize, skip, filter, sort);
     const create = (blog) => repository.create(blog);
     const findById = (id) => repository.findById(id);
     const findLatest = (id) => repository.findLatest(id);

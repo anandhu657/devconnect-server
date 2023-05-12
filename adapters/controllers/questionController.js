@@ -7,6 +7,7 @@ import updateLikeByQuestionId from "../../applications/use_cases/question/update
 import count from "../../applications/use_cases/question/countQuestions";
 import findQuestionByTag from '../../applications/use_cases/question/findQuestionByTag';
 import addCommentById from "../../applications/use_cases/question/addComment";
+import findAllTags from "../../applications/use_cases/question/findAllTags";
 
 export default function questionController(
     questionDbRepository,
@@ -22,12 +23,14 @@ export default function questionController(
 
     const getAllQuestions = async (req, res) => {
         const id = req.decodeToken.user.id;
-        const page = parseInt(req.query.skip) + 1
-        const pageSize = +req.query.limit || 10
-        const skip = (page - 1) * pageSize
+        const page = parseInt(req.query.skip) + 1;
+        const pageSize = +req.query.limit || 10;
+        const skip = (page - 1) * pageSize;
+        const filter = req.query.filter;
+        const sort = req.query.sort;
         const totalPosts = await count(id, dbRepository)
 
-        findAll(id, pageSize, skip, dbRepository)
+        findAll(id, pageSize, skip, filter, sort, dbRepository)
             .then((questions) => res.json({ questions, totalPosts }))
             .catch((err) => console.log(err))
     }
@@ -116,6 +119,12 @@ export default function questionController(
             .catch((err) => console.log(err))
     }
 
+    const getAllTags = (req, res) => {
+        findAllTags(tagsRepository)
+            .then((tags) => res.json(tags))
+            .catch((err) => console.log(err))
+    }
+
     return {
         getAllQuestions,
         addQuestion,
@@ -124,6 +133,7 @@ export default function questionController(
         getQuestionByTag,
         likeQuestion,
         dislikeQuestion,
-        addComment
+        addComment,
+        getAllTags
     }
 }

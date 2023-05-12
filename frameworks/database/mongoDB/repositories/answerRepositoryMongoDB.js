@@ -35,9 +35,65 @@ export default function answerDbRepositoryMongoDb() {
                 }
             );
     }
-    
+
+    const acceptAnswer = (questionId, answerId) => {
+        return QuestionModel
+            .updateOne(
+                {
+                    _id: questionId,
+                    "answers._id": answerId
+                },
+                {
+                    $set: {
+                        "acceptedAnswer": answerId,
+                        "answers.$.accepted": true
+                    }
+                }
+            );
+    }
+
+    const addLikeAnswer = (questionId, answerId, userId) => {
+        return QuestionModel
+            .updateOne(
+                {
+                    _id: questionId,
+                    "answers._id": answerId
+                },
+                {
+                    $addToSet: {
+                        "answers.$.likedusers": userId
+                    },
+                    $pull: {
+                        "answers.$.dislikedusers": userId
+                    }
+                }
+            );
+    }
+
+    const addDislikeAnswer = (questionId, answerId, userId) => {
+        return QuestionModel
+            .updateOne(
+                {
+                    _id: questionId,
+                    "answers._id": answerId
+                },
+                {
+                    $addToSet: {
+                        "answers.$.dislikedusers": userId
+                    },
+                    $pull: {
+                        "answers.$.likedusers": userId
+                    }
+                }
+            );
+    }
+
+
     return {
         create,
-        addComment
+        addComment,
+        acceptAnswer,
+        addLikeAnswer,
+        addDislikeAnswer
     }
 }

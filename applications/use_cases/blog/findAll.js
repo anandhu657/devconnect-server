@@ -1,11 +1,11 @@
-export default function findAll(id, pageSize, skip, blogRepository) {
+export default function findAll(id, pageSize, skip, filter, sort, blogRepository) {
     if (!id) {
         const error = new Error('id is required');
         error.statusCode = 401;
         throw error;
     }
 
-    return blogRepository.findAll(id, pageSize, skip).then((blogs) => {
+    return blogRepository.findAll(id, pageSize, skip, filter, sort).then((blogs) => {
         try {
             if (!blogs) {
                 const error = new Error('No blogs found');

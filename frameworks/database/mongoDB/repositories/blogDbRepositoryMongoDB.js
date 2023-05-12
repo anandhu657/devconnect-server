@@ -36,7 +36,7 @@ export default function blogRepositoryMongoDB() {
             .populate(
                 {
                     path: 'user',
-                    select: 'username profile_pic about'
+                    select: 'username profile_pic about connectionsCount'
                 }
             )
             .populate('tags')

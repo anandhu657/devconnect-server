@@ -13,6 +13,9 @@ export default function answersRouter(express) {
 
     router.route('/').post(authMiddleware, controller.addAnswer);
     router.route('/comment').post(authMiddleware, controller.addComment);
+    router.route('/accept').post(authMiddleware, controller.acceptAnswer);
+    router.route('/like').post(authMiddleware, controller.likeAnswer);
+    router.route('/dislike').post(authMiddleware, controller.dislikeAnswer);
 
     return router;
 }
