@@ -17,7 +17,7 @@ export default function chatRouter(express) {
 
     router.route('/users').get(authMiddleware, controller.fetchAllUsers);
     router.route('/currentUser').get(authMiddleware,controller.fetchCurrentUser);
-    router.route('/messages').get(authMiddleware, controller.fetchAllMessages);
+    router.route('/messages/:email').get(authMiddleware, controller.fetchAllMessages);
 
     return router;
 }

@@ -55,7 +55,7 @@ export default function blogRepositoryMongoDB() {
         return BlogModel
             .find({ user: { $ne: id }, tags: { $in: tags } })
             .sort({ date: -1 })
-            .select('title')
+            .select('title', 'date')
             .limit(3);
     }
 

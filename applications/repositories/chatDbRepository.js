@@ -1,5 +1,5 @@
 export default function chatDbRepository(repository) {
-    const findAllMessages = (email) => repository.findAllMessages(email);
+    const findAllMessages = (senderEmail, recipientEmail) => repository.findAllMessages(senderEmail, recipientEmail);
 
     return {
         findAllMessages

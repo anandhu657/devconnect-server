@@ -1,6 +1,6 @@
 import io from "socket.io";
-import mongoose from "mongoose";
 import ChatModel from "../database/mongoDB/models/chat";
+import notificationDbRepositoryMongoDB from "../database/mongoDB/repositories/notificationRepositoryMongoDB";
 
 export default function socketioConfig(server) {
     const socketio = io(server, {
@@ -27,6 +27,19 @@ export default function socketioConfig(server) {
                 // Broadcast the message to the sender and recipient
                 socketio.emit('get-personal-message', message);
             });
+        });
+
+        socket.on('join-room', (userId) => {
+            socket.join(userId);
+        });
+
+        socket.on('notification', async (message) => {
+            console.log('Received personal message:', message);
+
+            const newNotification = await notificationDbRepositoryMongoDB().addNotification(message.sender, message.receiver, message.questionId);
+            console.log('Notification saved to database', newNotification);
+
+            socketio.emit('send-new-notification', newNotification);
         });
 
         socket.on('disconnect', () => {

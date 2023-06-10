@@ -26,8 +26,9 @@ export default function chatController(
     }
 
     const fetchAllMessages = (req, res) => {
-        const email = req.decodeToken.user.email;
-        findAllMessages(email, chatRepository)
+        const senderEmail = req.decodeToken.user.email;
+        const recipientEmail = req.params.email;
+        findAllMessages(senderEmail, recipientEmail, chatRepository)
             .then((messages) => res.json(messages))
             .catch((err) => console.log(err))
     }

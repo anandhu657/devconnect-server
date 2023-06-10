@@ -1,3 +1,3 @@
-export default function findAllMessages(email, chatRepository) {
-    return chatRepository.findAllMessages(email);
+export default function findAllMessages(senderEmail, recipientEmail, chatRepository) {
+    return chatRepository.findAllMessages(senderEmail, recipientEmail);
 }
